@@ -19,4 +19,4 @@ done, make sure you're on the same network as the gateway & you're not using a V
 Scenes should be added to ```/lightshows```
 
 
-![Megaman](./doc/megaman.png)
+<img src="./doc/megaman.png" width="150" style="margin-top:50px, ">
