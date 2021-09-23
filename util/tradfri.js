@@ -4,6 +4,8 @@ const _ = require("dotenv").config()
 let instance = null
 const SECCODE = process.env.SECCODE
 
+tr.resetGateway = () => console.log("no,no D:")
+
 const discoverGW = async () => {
     console.log('discovering a network connected Gateway')
     const gw = await tr.discoverGateway();
@@ -14,18 +16,18 @@ const discoverGW = async () => {
     }
 }
 
-const connect = async (name) => {
+const connect = async (ip) => {
     console.log('Connecting to gateway')
-    const client = new tr.TradfriClient(name);
+    const client = new tr.TradfriClient(ip);
     try {
         const {
             identity,
             psk
         } = await client.authenticate(SECCODE);
-        const res = await client.connect(identity, psk);
+        await client.connect(identity, psk);
         console.log('successfully connected to gateway')
     } catch (_) {
-        console.debug(`Couldn't connect to tradfri client named: ${name}`)
+        console.debug(`Couldn't connect to tradfri client named: ${ip}`)
     }
     return client
 }
@@ -45,6 +47,10 @@ const getBulbs = (cli) => {
         out.push(getDevice(e, cli))
     }
     return out
+}
+
+const getBulb = (cli, id) => {
+    return cli.devices[id]
 }
 
 const getDevice = (key, cli) => {
@@ -74,7 +80,8 @@ const getInstance = async () => {
     instance = {
         getBulbs: () => getBulbs(client),
         setLight: (light, config) => setLight(light, config, client),
-        destroy: () => client.destroy()
+        destroy: () => client.destroy(),
+        getBulb: (id) => getBulb(client, id)
     }
     return instance
 }
