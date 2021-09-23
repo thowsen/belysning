@@ -51,6 +51,10 @@ const getDevice = (key, cli) => {
 //    color : hexcode (example F12C3B)
 //    transitionTime : milliseconds
 const setLight = (light, config, cli) => {
+    // light is capped at 80
+    if (config && config.dimmer && config.dimmer > 80){
+        config.dimmer = 80
+    }
     cli.operateLight(light, config, true) //always use operateLight
 }
 
