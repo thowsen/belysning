@@ -1,6 +1,7 @@
 const tr = require("node-tradfri-client")
 const _  = require("dotenv").config()
 
+let instance = null
 const SECCODE = process.env.SECCODE
 
 const discoverGW = async () => {
@@ -58,13 +59,19 @@ const setLight = (light, config, cli) => {
     cli.operateLight(light, config, true) //always use operateLight
 }
 
-const init = async() => {
+const getInstance = async() => {
+    if (instance) return instance
     const res = await discoverGW()
     if (!res) throw 'Couldn\'t find a gateway on current wifi'
 
     const client = await connect(res.ip)
     await discoverDevices(client)
-    return client
+    instance = {
+        getBulbs : () => getBulbs(client),
+        setLight : (light, config) => setLight(light, config, client),
+        destroy : () => client.destroy()
+        }
+    return instance
 }
 
-module.exports = {init, setLight, getBulbs}
+module.exports = {getInstance}
