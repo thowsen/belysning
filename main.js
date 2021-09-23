@@ -1,5 +1,5 @@
 const tradfri_client = require("./util/tradfri")
-const readline       = require('readline')
+const readline = require('readline')
 
 const exitOnKeyPress = (client) => {
     console.log('Press any key to exit')
@@ -9,7 +9,7 @@ const exitOnKeyPress = (client) => {
     process.stdin.on('keypress', (str, key) => {
         console.log('Shutting down')
         client.destroy()
-        process.exit() 
+        process.exit()
     })
 }
 
@@ -18,11 +18,25 @@ const main = async () => {
     const bulbs = client.getBulbs()
 
     exitOnKeyPress(client);
-    
+
     // example
-    bulbs.forEach(e => {
-        client.setLight(e,{color: 'FFFFFF'})
-    })
+    myFunc(client)
 }
+
+const rand = (i) => Math.floor(Math.random() * i)
+
+const myFunc = async (client) => setInterval(() => {
+
+    client.getBulbs().forEach((e) => {
+        let r = rand(255).toString(16);
+        let g = rand(255).toString(16);
+        let b = rand(255).toString(16);
+        client.setLight(e, {
+            color: r + g + b,
+            dimmer: 10,
+            transitionTime: 0
+        })
+    })
+}, 50)
 
 main()
