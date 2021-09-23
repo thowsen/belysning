@@ -1,4 +1,6 @@
-**Setup project**\
+# Monadens Belysning
+## Setup project
+
 install npm and node\
 ```sudo apt install node npm```\
 or \
@@ -14,7 +16,7 @@ where GATEWAY_PASSCODE is the code written on the back of the gateway. Do not co
 
 done, make sure you're on the same network as the gateway & you're not using a VPN
 
-**Add new lightscenes**
+## Add new lightscenes
 
 Scenes should be added to ```/lightshows```
 
