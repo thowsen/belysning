@@ -11,8 +11,8 @@ then stand in project folder and \
 
 Last but not least:
 
-``` echo "GATEWAY_PASSCODE" > .env ```\
-where GATEWAY_PASSCODE is the code written on the back of the gateway. Do not commit this file!
+``` echo "GATEWAY_SECURITY_CODE" > .env ```\
+where GATEWAY_SECURITY_CODE is the code written on the back of the gateway. Do not commit this file!
 
 done, make sure you're on the same network as the gateway & you're not using a VPN
 
