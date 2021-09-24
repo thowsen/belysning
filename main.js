@@ -1,10 +1,14 @@
 const tradfri_client = require("./util/tradfri")
 const readline = require('readline')
+const web_interface = require("./web/web")
 const {
     LEFT_RIGHT,
     ODD_EVEN,
     WHOLE_ROOM
 } = require('./util/groups')
+const {
+    clearInterval
+} = require("timers")
 
 const exitOnKeyPress = (client) => {
     console.log('Press any key to exit')
@@ -18,6 +22,7 @@ const exitOnKeyPress = (client) => {
     })
 }
 
+let currentTheme;
 const main = async () => {
     const client = await tradfri_client.getInstance()
     const bulbs = client.getBulbs()
@@ -26,13 +31,27 @@ const main = async () => {
 
     // example
     //tivoliLights(client)
-    whoMe(client)
+    web_interface.start((body) => {
+        if (currentTheme) {
+            clearInterval(currentTheme)
+        }
+        console.log("Switching to theme " + body.option);
+        switch (body.option) {
+            case "halloween":
+                currentTheme = halloween(client)
+                break
+            case "christmas":
+                currentTheme = christmas(client)
+                break
+            default:
+                break
+        }
+        return currentTheme
+    })
 }
 
 const rand = (i) => Math.floor(Math.random() * i)
-
-const tivoliLights = async (client) => setInterval(() => {
-
+const halloween = (client) => setInterval(() => {
     client.getBulbs().forEach((e) => {
         let r = rand(255).toString(16);
         let g = rand(255).toString(16);
@@ -45,17 +64,9 @@ const tivoliLights = async (client) => setInterval(() => {
         })
     })
 }, 50)
-
 let l = ODD_EVEN.even;
 let r = ODD_EVEN.odd;
-
-const whoMe = async (client) => {
-    client.getBulbs().forEach(e => {
-        client.setLight(e, {
-            dimmer: 0
-        })
-    })
-
+const christmas = (client) => {
     setInterval(() => {
         l.forEach((i) => {
             const bulb = client.getBulb(i);
