@@ -30,4 +30,5 @@ const generateBox = (buttonName, image, setting) => {
 
 generateBox('Halloween', 'https://dummyimage.com/256x192/000/bbb', 'halloween')
 generateBox('Christmas', 'https://dummyimage.com/256x192/000/bbb', 'christmas')
+generateBox('White', 'https://dummyimage.com/256x192/000/bbb', 'white')
 generateBox('Custom', 'https://dummyimage.com/256x192/000/bbb', 'joe')

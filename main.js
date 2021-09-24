@@ -31,22 +31,54 @@ const main = async () => {
 
     // example
     //tivoliLights(client)
-    web_interface.start((body) => {
+    /*web_interface.start((body) => {
         if (currentTheme) {
             clearInterval(currentTheme)
         }
-        console.log("Switching to theme " + body.option);
-        switch (body.option) {
-            case "halloween":
-                currentTheme = halloween(client)
-                break
-            case "christmas":
-                currentTheme = christmas(client)
-                break
-            default:
-                break
-        }
-        return currentTheme
+
+        bulbs.forEach((e) => {
+            client.setLight(e, {
+                onOff: false,
+                color: "ffffff",
+                dimmer: 40,
+                transitionTime: 500
+            })
+        })
+
+        setTimeout(() => {
+            console.log("Switching to theme " + body.option);
+            switch (body.option) {
+                case "halloween":
+                    currentTheme = halloween(client)
+                    break
+                case "christmas":
+                    currentTheme = christmas(client)
+                    break
+                case "white":
+                    currentTheme = white(client)
+                    break
+                default:
+                    break
+            }
+        }, 5000)
+    })*/
+    bulbs.forEach((e) => {
+        client.setLight(e, {
+            onOff: true,
+            color: 'FFFFFF',
+            dimmer: 50,
+            transitionTime: 500
+        })
+    })
+}
+
+const white = (client) => {
+    client.getBulbs().forEach((e) => {
+        client.setLight(e, {
+            color: 'FFFFFF',
+            dimmer: 50,
+            transitionTime: 0
+        })
     })
 }
 
