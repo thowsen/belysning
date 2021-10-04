@@ -18,6 +18,7 @@ const discoverGW = async () => {
 
 const connect = async (ip) => {
     console.log('Connecting to gateway')
+    if (SECCODE==null) console.log('Couldn\'t find .env file')
     const client = new tr.TradfriClient(ip);
     try {
         const {
