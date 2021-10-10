@@ -25,48 +25,17 @@ const main = async () => {
 
     exitOnKeyPress(client);
     allTivoliLights(client)
-    //flow(client)
 }
 
 const rand = (i) => Math.floor(Math.random() * i)
 
 // As the name implies. Starts all lights
-// OBS: this should be called !once! for each new 
+// OBS: this should be called !once! for reset before new routine.
 const startLights = async (client) => 
     client.getBulbs().forEach(e => client.setLight(e, {onOff: true, color: 'FFFFFF', dimmer: 500}))
 
 
-const flow = async (client) => {
-    for (let i = 1; i <= WHOLE_ROOM.length; i++){
-        let bulb = client.getBulb(WHOLE_ROOM[i-1])
-        await client.setLight(bulb, {onOff: true, color: 'FF6000', dimmer: 30})
-
-    }
-
-    console.log(client.getColor(WHOLE_ROOM[0]))
-    //setInterval(async () => {
-        //const bulb = client.getBulb(WHOLE_ROOM[rand(WHOLE_ROOM.length)])
-        //await client.setLight(bulb, {color: 'FFFFFF', dimmer: 10, transitionTime: 0})
-        //setTimeout(async () => {
-            //await client.setLight(bulb, {color: 'FF6000', dimmer: 30, transitionTime: 0})
-        //} , 5000)
-    //}, 10000)
-    //setInterval(() => {
-        //const bulb = client.getBulb(WHOLE_ROOM[rand(WHOLE_ROOM.length)])
-        //blinkLight(client, bulb)
-    //}, 5000)
-}
-
-
-const blinkLight = (client, bulb) => {
-    client.setLight(bulb, {color: 'FFFFFF', dimmer:10, transitionTime: 0})
-    setTimeout(() => {
-        client.setLight(bulb, {color: 'FF6000', dimmer: 30, transitionTime: 0})
-    },1000)
-}
-
-
-const allTivoliLights = async (client) => {
+const synchronizedTivoliLights = async (client) => {
     await startLights(client)
     setInterval(() => {
         let r = rand(255).toString(16);
