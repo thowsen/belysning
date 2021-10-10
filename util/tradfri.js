@@ -58,17 +58,21 @@ const getDevice = (key, cli) => {
     return cli.devices[key]
 }
 
+const getColor = (cli, id) => {
+    return getBulb(cli, id).lightList[0].color
+}
+
 //config values: 
 //    onOff : bool
 //    dimmer : 0-100
 //    color : hexcode (example F12C3B)
 //    transitionTime : milliseconds
-const setLight = (light, config, cli) => {
+const setLight = async (light, config, cli) => {
     // light is capped at 80
     if (config && config.dimmer && config.dimmer > 80) {
         config.dimmer = 80
     }
-    cli.operateLight(light, config, true) //always use operateLight
+    return await cli.operateLight(light, config, false) //always use operateLight
 }
 
 const getInstance = async () => {
@@ -83,7 +87,8 @@ const getInstance = async () => {
         getBulbs: () => getBulbs(client),
         setLight: (light, config) => setLight(light, config, client),
         destroy: () => client.destroy(),
-        getBulb: (id) => getBulb(client, id)
+        getBulb: (id) => getBulb(client, id),
+        getColor: (id) => getColor(client, id)
     }
     return instance
 }
