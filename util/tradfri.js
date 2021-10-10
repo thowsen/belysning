@@ -75,6 +75,7 @@ const getInstance = async () => {
     const res = await discoverGW()
     if (!res) throw 'Couldn\'t find a gateway on current wifi'
 
+    
     const client = await connect(res.ip)
     await discoverDevices(client)
     instance = {
