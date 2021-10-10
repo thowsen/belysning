@@ -1,3 +1,5 @@
+// 🪳
+
 const tradfri_client = require("./util/tradfri")
 const readline = require('readline')
 const {
