@@ -24,7 +24,7 @@ const main = async () => {
     const client = await tradfri_client.getInstance()
 
     exitOnKeyPress(client);
-    allTivoliLights(client)
+    halloween(client)
 }
 
 const rand = (i) => Math.floor(Math.random() * i)
@@ -51,6 +51,13 @@ const synchronizedTivoliLights = async (client) => {
             })
         })
     }, 3000)
+}
+
+const halloween = async (client) => {
+    await startLights(client)
+    client.getBulbs().forEach((e) => {
+        client.setLight(e, {color: 'FF8000', dimmer: 20})
+    })
 }
 
 
