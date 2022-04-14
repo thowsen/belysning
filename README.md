@@ -18,7 +18,7 @@ done, make sure you're on the same network as the gateway & you're not using a V
 
 ## Add new lightscenes
 
-Scenes should be added to ```/lightshows```
+Scenes should be added to ```/util/routines```
 
 
 <img src="./doc/megaman.png" width="150" style="margin-top:50px, ">

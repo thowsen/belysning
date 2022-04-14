@@ -47,7 +47,7 @@ const turnOn = async (client) => {
 }
 
 const startLights = async (client) =>
-    client.getBulbs().forEach(e => client.setLight(e, { onOff: true, color: 'FFFFFF', dimmer: 500 }))
+    await client.getBulbs().forEach(e => client.setLight(e, { onOff: true, color: 'FFFFFF', dimmer: 500 }))
 
 const apply = async (client, config) => {
     await startLights(client)
@@ -56,7 +56,8 @@ const apply = async (client, config) => {
 
 // may cause synchronization bugs when used without startLights. **should not be exported**.
 const applyUnsafe = async (client, config) => {
-    client.getBulbs().forEach(e => client.setLight(e, config))
+    // bulbs are unfortunately disregarding requests at times. may need to spam a couple of times.
+    await client.getBulbs().forEach(e => client.setLight(e, config))
 }
 
 const presets = { tivoliLightsAsync, halloween, tivoliLightsSync, turnOn, turnOff }

@@ -4,15 +4,14 @@ require('path').basename(__dirname);
 const app = express()
 const port = 8080
 
-var client = undefined 
+var client = undefined
 
 // singleton instance.
 const localClient = async () => {
-    if(!client)
+    if (!client)
         client = await belysning.connect()
     return client
 }
-
 
 // allows non-json responseheaders.
 app.use(express.urlencoded({ extended: false }))
@@ -20,7 +19,7 @@ app.use(express.urlencoded({ extended: false }))
 
 // serves index.html in /templates/index.html
 app.get('/', (req, res) => {
-    res.sendFile('index.html', { root: `${__dirname}/templates`})
+    res.sendFile('index.html', { root: `${__dirname}/templates` })
 })
 
 
@@ -36,12 +35,12 @@ app.post('/', async (req, res) => {
 
     if (!isNaN(dimmer) && dimmer >= 0 && dimmer <= 100)
         out = { ...out, 'dimmer': dimmer * 0.8 }
-    if (checkColorHex(color)){
+    if (checkColorHex(color)) {
         color = color.slice(1)
         out = { ...out, 'color': color }
     }
 
-    
+
     cli = await localClient()
     belysning.apply(cli, out)
     res.status(200).send({ message: "deployed", config: { ...out, "dimmer": 5 * out.dimmer / 4 } }) // alpha :)
@@ -64,5 +63,6 @@ const checkColorHex = hex => {
 
 
 app.listen(port, () => {
-    console.log(`Server up, listening on port: ${port} `)})
+    console.log(`Server up, listening on port: ${port} `)
+})
 
