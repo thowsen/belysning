@@ -1,20 +1,20 @@
-import { TradfriClient } from "./tradfri"
+import { TradfriCli } from "./tradfri"
 import { ILightConfig, LightConfigBuilder } from "./LightConfig"
 
 export class Routine {
 
-    client: TradfriClient
+    private client: TradfriCli
 
-    constructor(client: TradfriClient) {
+    constructor(client: TradfriCli) {
         this.client = client
     }
 
 
-    rand(i: number): number {
+    rand: (i: number) => number = i => {
         return Math.floor(Math.random() * i)
     }
 
-    async tivoliLightsSync() {
+    tivoliLightsSync: () => Promise<void> = async () => {
         await this.startLights()
         setInterval(() => {
             let r = this.rand(255).toString(16);
@@ -33,7 +33,7 @@ export class Routine {
         }, 3000)
     }
 
-    halloween = async () => {
+    halloween: () => Promise<void> = async () => {
         await this.startLights()
         const confBuilder = (new LightConfigBuilder)
         confBuilder.setLightsStatus = true
@@ -44,7 +44,7 @@ export class Routine {
     }
 
 
-    tivoliLightsAsync = async () => {
+    tivoliLightsAsync: () => Promise<void> = async () => {
         await this.startLights()
         var cli = await this.client
         setInterval(() => {
@@ -65,21 +65,21 @@ export class Routine {
         }, 300)
     }
 
-    turnOff = async () => {
+    turnOff: () => Promise<void> = async () => {
         const confBuilder = new LightConfigBuilder
         confBuilder.setLightsStatus = false
         const conf = confBuilder.build()
         this.apply(conf)
     }
 
-    turnOn = async () => {
+    turnOn: () => Promise<void> = async () => {
         const confBuilder = new LightConfigBuilder
         confBuilder.setLightsStatus = true
         const conf = confBuilder.build()
         this.apply(conf)
     }
 
-    startLights = async () => {
+    startLights: () => Promise<void> = async () => {
         const confBuilder = new LightConfigBuilder()
         confBuilder.setLightsStatus = true
         confBuilder.dimmerLevel = 100
@@ -89,15 +89,15 @@ export class Routine {
         await this.client.getBulbs().forEach((e: any) => this.client.setLight(e, conf))
     }
 
-    apply = async (config: ILightConfig) => {
+    apply: (cfg: ILightConfig) => Promise<void> = async (cfg) => {
         await this.startLights()
-        this.applyUnsafe(config)
+        this.applyUnsafe(cfg)
     }
 
     // may cause synchronization bugs when used without startLights. **should not be exported**.
-    private applyUnsafe = async (config: ILightConfig) => {
+    private applyUnsafe: (config: ILightConfig) => Promise<void> = async (cfg) => {
         // bulbs are unfortunately disregarding requests at times. may need to spam a couple of times.
-        await this.client.getBulbs().forEach((e: any) => this.client.setLight(e, config))
+        this.client.getBulbs().forEach((e: any) => this.client.setLight(e, cfg))
     }
 
 }

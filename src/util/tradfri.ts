@@ -2,34 +2,23 @@ import { ILightConfig } from "./LightConfig"
 const tr = require("node-tradfri-client")
 const _ = require("dotenv").config()
 
-export class TradfriClient {
-    static instance: TradfriClient
+export class TradfriCli {
+    static instance: TradfriCli
     private cli: any = undefined
     private SECCODE: string | undefined = process.env.SECCODE
 
-    public static getInstance: () => Promise<TradfriClient> = async () => {
-        if (TradfriClient.instance) {
-            return TradfriClient.instance
+    public static getInstance: () => Promise<TradfriCli> = async () => {
+        if (TradfriCli.instance) {
+            return TradfriCli.instance
         }
-        const tmp = new TradfriClient()
+        const tmp = new TradfriCli()
         await tmp._init();
-        TradfriClient.instance = tmp
-        return TradfriClient.instance
+        TradfriCli.instance = tmp
+        return TradfriCli.instance
     }
 
     // singleton object. only one connection possible. See getInstance.
     private constructor() { }
-
-
-    private _init: () => Promise<void> | never = async () => {
-        // discovering gateway
-        const res = await this._discoverGW()
-        if (!res) throw new Error("failed to discover gateway!");
-        const ip = res.ip
-        return this._connect(ip)
-            .then(() => this._discoverDevices())
-
-    }
 
 
     //config values: 
@@ -53,7 +42,7 @@ export class TradfriClient {
 
     getBulbs = () => {
         const BULB_TYPE = 2 // read documentation for types. Light bulbs are 2.
-        const out = []
+        const out: object[] = []
         for (const e in this.cli.devices) {
             if (this.cli.devices[e].type !== BULB_TYPE) continue
             out.push(this.getDevice(e))
@@ -81,6 +70,17 @@ export class TradfriClient {
     /*
         ---- AUXILLARY METHODS. HERE BE DRAGONS
     */
+
+
+    private _init: () => Promise<void> | never = async () => {
+        // discovering gateway
+        const res = await this._discoverGW()
+        if (!res) throw new Error("failed to discover gateway!");
+        const ip = res.ip
+        return this._connect(ip)
+            .then(() => this._discoverDevices())
+
+    }
 
     /**
      * attemps to retrieve the IP of a TradFri Gateway

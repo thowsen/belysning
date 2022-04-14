@@ -1,6 +1,6 @@
 // 🪳
 
-import { TradfriClient } from "./tradfri"
+import { TradfriCli } from "./tradfri"
 import { Routine } from "./routines"
 import { ILightConfig } from "./LightConfig"
 
@@ -16,7 +16,7 @@ export default class Belysning {
 
     static getInstance: () => Promise<Belysning> = async () => {
         if (!Belysning.singleton) {
-            var client = await TradfriClient.getInstance()
+            var client = await TradfriCli.getInstance()
             Belysning.singleton = new Belysning(client)
         }
         return Belysning.singleton
