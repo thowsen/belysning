@@ -9,7 +9,7 @@ export interface ILightConfig {
 export class LightConfigBuilder {
     private _lightsOn: boolean = true;
     private _dimmer: number = 50;
-    private _color: string = "#0f1adb";
+    private _color: string = "0f1adb";  // Should not include the hashtag
     private _transitionTime: number = 0;
 
     // Nested class since typescript seemingly doesn't allow private classes in other forms.
