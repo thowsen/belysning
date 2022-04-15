@@ -10,16 +10,32 @@
 </head>
 
 <body>
-    <section class="container">
-        <h2>Belysning</h2>
+
+    <section id="fst-container" class="container">
+        <h1>Belysning</h1>
+
         <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
         <form id="mainform" action="/" method="POST" target="dummyframe">
-            <label for="color">color selector</label>
-            <input id="color" name="color" type="color"></input><br>
-            <label for="dimmer">dimmer</label>
-            <input id="dimmer" name="dimmer" type="range" min="0" max="100" value="50"></input><br>
-            <input id="submitbutton" type="submit" value="deploy"></input><br>
+
+            <div class="colorcontainer">
+                <label class="color" for="color">color selector</label>
+                <input class="color" id="color" name="color" type="color"></input>
+            </div>
+            <div class="slidercontainer">
+                <label class="dimmertext" for="dimmer">dimmer</label>
+                <input class="slider" id="dimmer" name="dimmer" type="range" min="0" max="100" value="50"></input>
+            </div>
+            <input class="btn info" id="submitbutton" type="submit" value="deploy"></input>
         </form>
+        <div class="misc">
+            <h3>Misc</h3>
+            <div id="miscbuttons">
+                <button class="btn info">Turn On</button>
+                <button class="btn info">Turn Off</button>
+                <button class="btn info">Tivoli</button>
+                <button class="btn info">Tivoli 2</button>
+            </div>
+        </div>
     </section>
 </body>
 

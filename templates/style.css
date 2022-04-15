@@ -1,39 +1,132 @@
-#submitbutton {
-    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
-    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
-    border-radius: 10px;
-    width: 5rem;
-    height: 2rem;
-    color: red;
-    background-color: aqua;
-    transition-duration: 100ms;
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+* {
+    font-family: "Press Start 2P", cursive;
+    font-size: 0.8rem;
+    
 }
 
-#submitbutton:hover {
-    transform: rotate(360deg);
-    /* Hamuel request */
-
+h1 {
+    font-size: 1.5rem;
+    margin: auto;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
-    background-image: url("https://cdn.discordapp.com/attachments/911331522215284767/964106956983902288/unknown.png");
+    background-image: url("megaman.png");
     background-repeat: no-repeat;
     background-position: center;
-    display: grid;
     justify-content: center;
 }
 
+
 section {
+    margin: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     background-color: white;
-    width: 10rem;
+    width: 20rem;
     max-width: 100vw;
-    height: 15rem;
     padding: 2rem;
-    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 7px 7px 3px 0px rgba(0, 0, 0, 0.75);
 }
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #2196F3;
+    cursor: pointer;
+
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #2196F3;
+    cursor: pointer;
+
+}
+
+
+.info {background-color: #2196F3;} /* Blue */
+.info:hover {background: #0b7dda;}
+
+.btn {
+    border: none; /* Remove borders */
+    color: white; /* Add a text color */
+    padding: 0.5rem 1rem; /* Add some padding */
+    cursor: pointer; /* Add a pointer cursor on mouse-over */
+    border-radius: 5px;
+    font-size: .8rem;
+    margin: 5px;
+    width: 9rem;
+    height: 4rem;
+  }
+
+
+
+#mainform {
+    margin: 2rem 0;
+    padding: 1rem 0;
+    border-style:dotted none dotted none;
+}
+
+.slidercontainer {
+    margin: 1rem 0rem;
+}
+
+.slidercontainer label {
+    text-align: left !important;
+    
+    padding-left: 1rem;
+}
+
+.slidercontainer input {
+    margin-top: .5rem;
+}
+
+.colorcontainer > label {
+    font-size: 0.9rem;
+    padding-left: 1rem;
+}
+
+.colorcontainer > input {
+    margin-top: 0.5rem;
+}
+
+#submitbutton {
+    display: block;
+    margin: auto;
+}
+
+#miscbuttons {
+    display: flex;
+    margin: auto;
+    flex-wrap: wrap;
+}
+
+.misc {
+    text-align: center;
+}
+
+#miscbuttons > * {
+    margin: 0.5rem auto;
+}
+
+
