@@ -15,12 +15,13 @@ const port: number = Number(process.env.port) | 8080
 
 // allows non-json responseheaders.
 app.use(express.urlencoded({ extended: false }))
+app.use(express.static('templates'))
 
 
 // serves index.html in /templates/index.html
-app.get('/', (_: Request, res: Response) => {
-    res.sendFile('index.html', { root: `${__dirname}/templates` })
-})
+//app.get('/', (_: Request, res: Response) => {
+//    res.sendFile('index.html', { root: `${__dirname}/templates` })
+//})
 
 // upon post request to root.
 app.post('/', async (req: Request, res: Response) => {
