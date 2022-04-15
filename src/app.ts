@@ -11,15 +11,12 @@ const app: Express = express()
 const port: number = Number(process.env.port) | 8080
 
 
-
-
 // allows non-json responseheaders.
-
 app.use(express.urlencoded({ extended: false }))
+
+//serves stack files from templates folder. index.html is default when
+// get / is triggered.
 app.use(express.static('templates'))
-
-
-// serves index.html in /templates/index.html
 
 
 // upon post request to root.
