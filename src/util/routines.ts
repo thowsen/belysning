@@ -25,7 +25,7 @@ export class Routine {
             const confBuilder = new LightConfigBuilder()
             confBuilder.setTransitionTime = 0
             confBuilder.dimmerLevel = d
-            confBuilder.safeSetColor(r + g + b)
+            confBuilder.safeSetColor(`#${r}${g}${b}`)
 
             const conf = confBuilder.build()
 
@@ -37,7 +37,7 @@ export class Routine {
         await this.startLights()
         const confBuilder = (new LightConfigBuilder)
         confBuilder.setLightsStatus = true
-        confBuilder.safeSetColor("FF8000")
+        confBuilder.safeSetColor("#FF8000")
         confBuilder.dimmerLevel = 20
         const conf = confBuilder.build()
         this.apply(conf)
@@ -57,7 +57,7 @@ export class Routine {
                 const confBuilder = new LightConfigBuilder()
                 confBuilder.setTransitionTime = 0
                 confBuilder.dimmerLevel = d
-                confBuilder.safeSetColor(r + g + b)
+                confBuilder.safeSetColor(`#${r}${g}${b}`)
 
                 const conf = confBuilder.build()
                 this.client.setLight(e, conf)
@@ -83,7 +83,7 @@ export class Routine {
         const confBuilder = new LightConfigBuilder()
         confBuilder.setLightsStatus = true
         confBuilder.dimmerLevel = 100
-        confBuilder.safeSetColor('FFFFFF')
+        confBuilder.safeSetColor('#FFFFFF')
         const conf = confBuilder.build()
 
         await this.client.getBulbs().forEach((e: any) => this.client.setLight(e, conf))

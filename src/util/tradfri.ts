@@ -41,9 +41,7 @@ export class TradfriCli {
             return {...confBuilder, dimmerLevel: level * 0.8}
         }
         function addColor(color: string, confBuilder: PLC): PLC {
-            if (color.length !== 6) {
-                throw Error(`color has an invalid length: ${color.length}, must be 6`)
-            } else if (color.match(/[a-zA-Z0-9]{6}/)) {  // Match a 6 character hex code
+            if (!color.match(/[a-fA-F0-9]{6}/)) {  // Match a 6 character hex code
                 throw Error(`color is not a valid hex code: ${color}`)
             }
             return {...confBuilder, color: color}
@@ -72,10 +70,10 @@ export class TradfriCli {
 
         // Construct the object to send to the external tradfri API.
         const outConf = {
-            onOff: config.lightsOn,
-            dimmer: config.dimmerLevel,
-            color: config.color,
-            transitionTime: config.transitionTime,
+            onOff: builder.lightsOn,
+            dimmer: builder.dimmerLevel,
+            color: builder.color,
+            transitionTime: builder.transitionTime,
         }
         await this.cli?.operateLight(light, outConf, false)  // always use operateLight
         return
