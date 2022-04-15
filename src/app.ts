@@ -14,18 +14,19 @@ const port: number = Number(process.env.port) | 8080
 
 
 // allows non-json responseheaders.
+
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static('templates'))
 
 
 // serves index.html in /templates/index.html
-//app.get('/', (_: Request, res: Response) => {
-//    res.sendFile('index.html', { root: `${__dirname}/templates` })
-//})
+
 
 // upon post request to root.
 app.post('/', async (req: Request, res: Response) => {
+    console.dir("triggered")
     // extract body
+    console.dir(req.body)
     var onOff: boolean = req.body.status
     var dimmer: number = req.body.dimmer
     var color: string = req.body.color
@@ -61,8 +62,9 @@ app.post('/', async (req: Request, res: Response) => {
 })
 
 
+
 // tries to initialize the Belysning connection. Will crash hard if it fails.
-Belysning.getInstance()
+//Belysning.getInstance()
 
 // start the server
 app.listen(port, () => {

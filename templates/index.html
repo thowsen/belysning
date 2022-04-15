@@ -5,27 +5,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./script/colorpicker.js" defer></script>
-    <title>Document</title>
-    <script src="script.js" defer> </script>
+    <title>Belysning</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    
-    <div class="container">
+
+    <section class="container">
         <h2>Belysning</h2>
-    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-    <form action="/" method="POST" target="dummyframe">
-        <label for="color">color selector</label>
-        <input id="color" name="color" type="color" ></input><br>
-        <label for="dimmer">dimmer</label>
-        <input id="dimmer" name="dimmer" type="range" min="0" max="100" value="50"></input><br>
-        
-        <input id="submitbutton" type="submit" value="deploy" ></input><br>
-    </form>
-    
-    </div>
+        <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+        <form id="mainform" action="/" method="POST" target="dummyframe">
+            <label for="color">color selector</label>
+            <input id="color" name="color" type="color"></input><br>
+            <label for="dimmer">dimmer</label>
+            <input id="dimmer" name="dimmer" type="range" min="0" max="100" value="50"></input><br>
+            <input id="submitbutton" type="submit" value="deploy"></input><br>
+        </form>
+    </section>
 </body>
 
 </html>
