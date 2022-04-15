@@ -44,7 +44,7 @@ export class LightConfigBuilder {
         }
 
         get transitionTime(): number {
-            return this.transitionTime
+            return this._transitionTime
         }
     }
 
@@ -62,7 +62,7 @@ export class LightConfigBuilder {
 
     safeSetColor: (hex: string) => boolean = (hex) => {
         if (this.checkColorHex(hex)) {
-            this._color = hex
+            this._color = hex.slice(1)
             return true
         }
         return false
