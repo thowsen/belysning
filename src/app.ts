@@ -10,12 +10,15 @@ require('path').basename(__dirname);
 const app: Express = express()
 const port: number = Number(process.env.port) | 8080
 
+
+
+
 // allows non-json responseheaders.
 app.use(express.urlencoded({ extended: false }))
 
 
 // serves index.html in /templates/index.html
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_: Request, res: Response) => {
     res.sendFile('index.html', { root: `${__dirname}/templates` })
 })
 
@@ -56,6 +59,9 @@ app.post('/', async (req: Request, res: Response) => {
     }
 })
 
+
+// tries to initialize the Belysning connection. Will crash hard if it fails.
+Belysning.getInstance()
 
 // start the server
 app.listen(port, () => {
