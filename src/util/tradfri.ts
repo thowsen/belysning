@@ -1,11 +1,11 @@
 import { ILightConfig } from "./LightConfig"
-const tr = require("node-tradfri-client")
+import {discoverGateway, TradfriClient, Accessory, AccessoryTypes } from "node-tradfri-client"
 const _ = require("dotenv").config()
 
 export class TradfriCli {
     static instance: TradfriCli
-    private cli: any = undefined
-    private SECCODE: string | undefined = process.env.SECCODE
+    private cli: TradfriClient | undefined = undefined
+    private SECCODE: string = TradfriCli.extractSecurityCode()
 
     public static getInstance: () => Promise<TradfriCli> = async () => {
         if (TradfriCli.instance) {
@@ -29,7 +29,7 @@ export class TradfriCli {
      *     color : hexcode (example F12C3B)
      *     transitionTime : milliseconds
      */
-    setLight = async (light: any, config: Partial<ILightConfig>) => {
+    setLight = async (light: Accessory, config: Partial<ILightConfig>) => {
         type PLC = Partial<ILightConfig>
         function addDimmer(level: number, confBuilder: PLC): PLC {
             if (level <= 0 || level > 100) {
@@ -77,34 +77,39 @@ export class TradfriCli {
             color: config.color,
             transitionTime: config.transitionTime,
         }
-        await this.cli.operateLight(light, outConf, false)  // always use operateLight
+        await this.cli?.operateLight(light, outConf, false)  // always use operateLight
+        return
     }
 
-    getBulbs = () => {
+    getBulbs : () => Accessory[] = () => {
         const BULB_TYPE = 2 // read documentation for types. Light bulbs are 2.
-        const out: object[] = []
-        for (const e in this.cli.devices) {
-            if (this.cli.devices[e].type !== BULB_TYPE) continue
-            out.push(this.getDevice(e))
+        const out: Accessory[] = []
+        for (const e in this.cli?.devices) {
+            if (this.cli?.devices[e].type !== BULB_TYPE) continue
+            const elem = this.getDevice(e)
+            if (elem){
+                out.push(elem)
+            }
         }
         return out
     }
 
-    getBulb = (id: any) => {
-        return this.cli.devices[id]
+    getBulb = (id: string) => {
+        return this.cli?.devices[id]
     }
 
-    getDevice = (key: any) => {
-        return this.cli.devices[key]
+    getDevice = (key: string) => {
+        return this.cli?.devices[key]
     }
 
     /**
      * retrieve the color of a light bulb
      * @param id the id of the light bulb
-     * @returns a 6 digit hexadecimal string representation of the color. NOT including '#' sign.
+     * @returns a 6 digit hexadecimal string representation of the color. 
+     * NOT including '#' sign.
      */
-    getColor = (id: any) => {
-        return this.getBulb(id).lightList[0].color
+    getColor = (id: string) => {
+        return this.getBulb(id)?.lightList[0].color
     }
 
     /*
@@ -112,28 +117,22 @@ export class TradfriCli {
     */
 
 
-    private _init: () => Promise<void> | never = async () => {
+    private _init: () => Promise<void> = async () => {
         // discovering gateway
-        const res = await this._discoverGW()
-        if (!res) throw new Error("failed to discover gateway!");
-        const ip = res.ip
+        const ip = await this._discoverGW()
         return this._connect(ip)
             .then(() => this._discoverDevices())
-
     }
 
     /**
      * attemps to retrieve the IP of a TradFri Gateway
      * @returns either null or a prototype object containing the IP adress of a TradFri Gateway
      */
-    private _discoverGW = async () => {
+    private _discoverGW : () => Promise<string> = async () => {
         console.log('discovering a network connected Gateway')
-        const gw = await tr.discoverGateway();
-        if (!gw) return null
-        return {
-            message: "success",
-            ip: gw.addresses[0]
-        }
+        const gw = await discoverGateway();
+        if (!gw) throw new Error("failed to discover Gateway")
+        return gw.addresses[0]
     }
 
     /**
@@ -141,15 +140,14 @@ export class TradfriCli {
      * This must be called before any commands are sent to bulbs.
      * @param ip the IP of a Tradfri Gateway on the network
      */
-    private _connect: (ip: String) => Promise<void> = async (ip) => {
+    private _connect: (ip: string) => Promise<void> = async (ip) => {
         console.log('Connecting to gateway')
-        if (this.SECCODE == null) console.log('Couldn\'t find .env file')
-        const client = new tr.TradfriClient(ip);
+        const client  : TradfriClient = new TradfriClient(ip);
         try {
             const {
                 identity,
                 psk
-            } = await client.authenticate(this.SECCODE);
+            } = await client.authenticate(this.SECCODE!);
             await client.connect(identity, psk);
             console.log('successfully connected to gateway')
         } catch (_) {
@@ -162,12 +160,16 @@ export class TradfriCli {
      * The gateway checks all devices on the network.
      * If the devices are manipulated by remote, the API will know about it.
      */
-    private _discoverDevices = async () => {
+    private _discoverDevices : () => Promise<void> = async () => {
         console.log(`Discovering devices`)
-        await this.cli.observeDevices()
-        await this.cli.observeGroupsAndScenes()
+        await this.cli?.observeDevices()
+        await this.cli?.observeGroupsAndScenes()
         console.log(`Devices successfully discovered`)
     }
 
-
+    private static extractSecurityCode : () => string = () => {
+        const out = process.env.SECCODE
+        if (!out) throw new Error("failed to extract security code from env")
+        return out
+    }
 }
